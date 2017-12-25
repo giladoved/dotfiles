@@ -33,9 +33,6 @@ alias q='exit'
 alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 alias topdu='du -a | sort -nr | head -50'
 
-# Prompt
-export PS1="%m~/%C$ "
-
 # Theme
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
@@ -45,6 +42,14 @@ alias tmuxn='tmux new-session -s $$'
 _trap_exit() { tmux kill-session -t $$; }
 trap _trap_exit EXIT
 
+
+# =========================================
+# Prompt
+# =========================================
+
+#export PS1="%m~/%C$ "
+autoload -U colors && colors
+PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
 
 # =========================================
 # Bottom of the zshrc file
