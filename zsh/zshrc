@@ -1,31 +1,42 @@
-# Set the Path
+# =========================================
+# Exports
+# =========================================
+
+# Path
 export PATH=/usr/local/bin:$PATH
 export PATH="$PATH:$HOME/.rvm/bin"
 
-# Set the Term
+# Term
 export TERM="xterm-256color"
 
-# Set the Editor
+# Editor
 export EDITOR=vim
 
-# Aliases
-alias matlab='/Applications/MATLAB_R2016b.app/bin/matlab'
-alias clera='clear'
+# =========================================
+# General settings
+# =========================================
 
-function cdls () {
-  cd "$@" && ls
-}
-
+# Prompt
 bindkey -v
 bindkey '^R' history-incremental-search-backward
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
 
+# =========================================
+# Custom settings
+# =========================================
 
-# Set the Prompt
+# Aliases
+alias matlab='/Applications/MATLAB_R2016b.app/bin/matlab'
+alias clera='clear'
+alias q='exit'
+alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
+alias topdu='du -a | sort -nr | head -50'
+
+# Prompt
 export PS1="%m~/%C$ "
 
-# Set the Base16 shell colors
+# Theme
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
@@ -34,13 +45,9 @@ alias tmuxn='tmux new-session -s $$'
 _trap_exit() { tmux kill-session -t $$; }
 trap _trap_exit EXIT
 
-# Detach tmux when exitting
-#exit() {
-#    if [[ -z $TMUX ]]; then
-#        builtin exit
-#    else
-#        tmux detach
-#    fi
-#}
+
+# =========================================
+# Bottom of the zshrc file
+# =========================================
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
