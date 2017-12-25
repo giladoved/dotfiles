@@ -1,6 +1,24 @@
 # My Dotfiles
 
-These dotfiles are designed for Mac
+These dotfiles that I use. Feel free to fork and customize!
+
+### iTerm Settings
+
+- For the same terminal color theme as vim: set the theme to `base16-oceanicnext.dark.256.itermcolors`
+
+- Automatically join your tmux session by sending the following text at start: `tmux attach -t mysession || tmux new -s mysession`
+
+### tmux
+
+- Prefix is set to CTRL-A. I mapped my CAPS button to CTRL for quick access.
+
+- Resize panes using Prefix-H,J,K,L.
+
+- Panes are created with `-` (horizontal split) and `|` (vertical split).
+
+- Smart pane switching to easily move between tmux/vim panes: Prefix-h,j,k,l.
+
+- Vim copy / pasting: Prefix-v to start, Prefix-y to copy, prefix-P (uppercase P) to paste.
 
 ### Steps to adapt
 
@@ -16,21 +34,7 @@ If you get errors installing the vim plugins, make sure you have installed the x
 
 5. Restart your terminal
 
-### iTerm Settings
-
-- For the same terminal color theme as vim: set the theme to `base16-oceanicnext.dark.256.itermcolors`
-
-- Automatically join your tmux session by sending the following text at start: `tmux attach -t mysession || tmux new -s mysession`
-
 ### Features
-Leader-Up = moves the current pane into it's own temporary window
-
-Leader-Down = undoes the above command
-
-Leader-Left/Right = resize panes
-
-Ctrl-HJKL = seamlessly hop between tmux/vim panes
-
 Leader-ff = FuzzyFind (CommandT plugin)
 
 Leader-nt = directory file structure (NERDTree plugin)
