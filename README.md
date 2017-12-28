@@ -18,6 +18,8 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
 
 - Vim copy / pasting (in copy mode): Prefix-v to start, Prefix-y to copy, prefix-P (uppercase P) to paste.
 
+- Save tmux states with Prefix-S, and restore with Prefix-r
+
 ### iTerm Settings
 
 - For the same terminal color theme as vim: set the theme to `base16-oceanicnext.dark.256.itermcolors`
