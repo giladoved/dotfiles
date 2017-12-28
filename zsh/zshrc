@@ -27,6 +27,11 @@ bindkey "^[[B" history-search-forward
 # =========================================
 
 # Aliases
+if type nvim > /dev/null 2>&1; then
+  alias vim='nvim'
+  alias vi='nvim'
+  export EDITOR=nvim
+fi
 alias matlab='/Applications/MATLAB_R2016b.app/bin/matlab'
 alias clera='clear'
 alias q='exit'
