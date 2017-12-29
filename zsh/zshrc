@@ -3,8 +3,10 @@
 # =========================================
 
 # Path
-export PATH=/usr/local/bin:$PATH
+export PATH="/usr/local/bin:$PATH"
 export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$HOME/Library/Haskell/bin:$PATH"
+export PATH="/usr/bin:/bin:$HOME/.cabal/bin:$HOME/.local/bin:$PATH"
 
 # Term
 export TERM="xterm-256color"
@@ -13,17 +15,7 @@ export TERM="xterm-256color"
 export EDITOR=vim
 
 # =========================================
-# General settings
-# =========================================
-
-# Prompt
-bindkey -v
-bindkey '^R' history-incremental-search-backward
-bindkey "^[[A" history-search-backward
-bindkey "^[[B" history-search-forward
-
-# =========================================
-# Custom settings
+# Settings
 # =========================================
 
 # Aliases
@@ -61,3 +53,10 @@ PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_c
 # =========================================
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+# fzf options
+export FZF_DEFAULT_OPTS="--extended"
+# up to bring up fzf
+# bindkey '^[[A' fzf-history-widget
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

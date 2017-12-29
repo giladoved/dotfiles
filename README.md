@@ -18,7 +18,17 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
 
 - Vim copy / pasting (in copy mode): Prefix-v to start, Prefix-y to copy, prefix-P (uppercase P) to paste.
 
-- Save tmux states with Prefix-S, and restore with Prefix-r
+- Control-r for reverse command history search (uses fzf)
+
+- Control-t fuzzy finds files in a directory (uses fzf)
+
+- Option select to copy/paste with clipboard
+
+### vim
+
+- Control-t fuzzy finds files
+
+- ,-nt opens up the directory viewer
 
 ### iTerm Settings
 
@@ -39,12 +49,6 @@ If you get an error, you might need to make the install script executable: `chmo
 If you get errors installing the vim plugins, make sure you have installed the xcode dev tools: `xcode-select --install`
 
 5. Restart your terminal
-
-### Features
-Leader-ff = FuzzyFind (CommandT plugin)
-
-Leader-nt = directory file structure (NERDTree plugin)
-
 
 
 Enjoy! ✌
