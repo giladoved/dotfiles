@@ -28,7 +28,11 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
 
 - Control-t fuzzy finds files
 
+- Control-n for autocomplete
+
 - ,-nt opens up the directory viewer
+
+- persistant undos
 
 ### iTerm Settings
 
