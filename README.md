@@ -34,6 +34,10 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
 
 - persistant undos
 
+- no need to press shift when typing colon :
+
+- F2 is paste toggle
+
 ### iTerm Settings
 
 - For the same terminal color theme as vim: set the theme to `base16-oceanicnext.dark.256.itermcolors`
