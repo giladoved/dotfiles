@@ -36,9 +36,11 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
 
 - no need to press shift when typing colon :
 
-- F2 is paste toggle
+- <F2> is paste toggle
 
-- stop search by double tapping esc
+- stop search by double tapping <esc>
+
+- open/close fold with <space>
 
 ### iTerm Settings
 
