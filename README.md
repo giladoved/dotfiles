@@ -30,7 +30,7 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
 
 - Control-n for autocomplete
 
-- ,-nt opens up the directory viewer
+- <,><n><t> opens up the directory viewer
 
 - persistant undos
 
@@ -41,6 +41,8 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
 - stop search by double tapping <esc>
 
 - open/close fold with <space>
+  
+- comment by typing <g><c> on highlighted code
 
 ### iTerm Settings
 
