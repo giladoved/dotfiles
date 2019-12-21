@@ -7,46 +7,45 @@
 # @version 1.0
 #-------------------------------------------------
 
-echo -e "Installing Gilad's dotfiles...\n"
+echo -e "#-------------------------------------------------"
+echo -e "# Setting Gilad Dotfiles"
+echo -e "#-------------------------------------------------"
+echo -e ""
+
+
+#-------------------------------------------------
+# Util functions
+#-------------------------------------------------
+
+brewInstall() { if brew ls --versions "$1"; then brew upgrade "$1"; else brew install "$1"; fi }
+
 
 #-------------------------------------------------
 # Configuring neovim
 #-------------------------------------------------
-echo -e "~~~ NEOVIM ~~~"
+echo -e "~~~~~~ NEOVIM ~~~~~~"
 
 # install neovim
-echo -e "Installing neovim"
-brew install neovim
+echo -e "... Neovim"
+brewInstall neovim
 
 # install vim plug
 VIM_PLUG_DIR=~/.local/share/nvim/site/autoload/
 if [ ! -f $VIM_PLUG_DIR/plug.vim ]; then
-    echo -e "Installing Vim Plug"
+    echo -e "... Vim Plug"
     mkdir -p $VIM_PLUG_DIR
     curl -fLo $VIM_PLUG_DIR/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
-# backup current vim configs
-BACKUP_VIM_DIR=~/.backup/vim
-mkdir -p $BACKUP_VIM_DIR
-mv ~/.vimrc $BACKUP_VIM_DIR
-mv -r ~/.vim $BACKUP_VIM_DIR
-# remove vim configs
-rm ~/.vimrc
-rm -rf ~/.vim
-
-# backup current neovim configs
-BACKUP_NEOVIM_DIR=~/.backup/neovim
-mkdir -p $BACKUP_NEOVIM_DIR
-mv -r ~/.nvim $BACKUP_NEOVIM_DIR
-# remove neovim configs
-rm -rf ~/.nvim
-
-# create neovim folder
-mkdir -p ~/.nvim
+# backup current configs
+BACKUP_DIR=~/.backup
+mkdir -p $BACKUP_DIR
+[ -f ~/.vimrc ] && cat ~/.vimrc > $BACKUP_DIR/vimrc && rm ~/.vimrc
+[ -f ~/.nvim/nvimrc ] && cat ~/.nvim/nvimrc > $BACKUP_DIR/nvimrc && rm ~/.nvim/nvimrc
 
 # apply neovim configs
 echo -e "Applying neovim configs...\n"
+mkdir -p ~/.nvim
 ln -sf $PWD/neovim/nvimrc ~/.nvim/nvimrc
 
 
