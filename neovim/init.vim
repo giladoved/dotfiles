@@ -2,9 +2,6 @@
 " Install plugins
 call plug#begin('~/.config/nvim/plugged')
 
-" " Vim theme
-" Plug 'chriskempson/base16-vim'
-
 Plug 'mhartington/oceanic-next'
 
 " Commenting support (gc)
@@ -38,22 +35,22 @@ colorscheme OceanicNext
 
 " ========= Options ========= "
 " disable compatibility to old vim
-" set nocompatible
+set nocompatible
 
-" " add line numbers
+" add line numbers
 set number
 
-" " get bash-like tab completions
-" set wildmode=longest,list
+" get bash-like tab completions
+set wildmode=longest,list
 
-" " show matching brackets
-" set showmatch
+" show matching brackets
+set showmatch
+
+" change the vim leader from \ to ,
+let mapleader=","
 
 " " place the cursor, visual mode on click, mouse scrolling
 " set mouse=a
-
-" " change the vim leader from \ to ,
-" let mapleader=","
 
 " " syntax highlighting
 " if !exists("g:syntax_on")
@@ -66,9 +63,9 @@ set number
 " " incremental searching, each character updates search
 " set incsearch
 
-" " turn off error beeping and flashing
-" set visualbell
-" set errorbells
+" turn off error beeping and flashing
+set visualbell
+set errorbells
 
 " " visually wrap long lines to see everything
 " set wrap
@@ -108,20 +105,20 @@ set number
 " " tab button is 4 spaces
 " set expandtab
 
-" " remember more commands and search history
-" set history=1000
+" remember more commands and search history
+set history=1000
 
-" " remember more levels of undo
-" set undolevels=1000
+" remember more levels of undo
+set undolevels=1000
 
-" " persistant undo history
-" set undodir=~/.config/nvim/undodir
+" persistant undo history
+set undodir=~/.config/nvim/undodir
 
-" " save undos when file is closed
-" set undofile
+" save undos when file is closed
+set undofile
 
-" " number of lines to save for undo
-" set undoreload=10000
+" number of lines to save for undo
+set undoreload=10000
 
 
 " " ========= File Types ======== "
@@ -157,32 +154,24 @@ set number
 " autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 
 
-" " ========= Theme ======== "
-" " Base16 vim colorscheme
-" let base16colorspace=256
-" if !exists('g:colors_name') || g:colors_name != 'base16-oceanicnext'
-"   colorscheme base16-oceanicnext
-" endif
+" ========= Plugin Options ======== "
+" which file types NERDtree should ignore
+let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.py\$class$', '\.obj$', '\.o$', '\.so$', '^\.git$', '__pycache__', '\.DS_Store', '\.class$' ]
 
 
-" " ========= Plugin Options ======== "
-" " which file types NERDtree should ignore
-" let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.py\$class$', '\.obj$', '\.o$', '\.so$', '^\.git$', '__pycache__', '\.DS_Store', '\.class$' ]
-
-
-" " ========= Shortcuts ======== "
-" " no need to press shift ; for every vim command
-" nnoremap ; :
+" ========= Shortcuts ======== "
+" no need to press shift ; for every vim command
+nnoremap ; :
 
 " " when moving up/down do not jump over long wrapped lines
 " nnoremap j gj
 " nnoremap k gk
 
-" " paste toggle with F2
-" set pastetoggle=<F2>
+" paste toggle with F2
+set pastetoggle=<F2>
 
-" " toggling NERDTree
-" map <silent> <leader>nt :NERDTreeToggle<CR>
+" toggling NERDTree
+map <silent> <leader>nt :NERDTreeToggle<CR>
 
-" " fuzzy find
-" nnoremap <C-t> :Files<CR>
+" fuzzy find
+nnoremap <C-t> :Files<CR>
