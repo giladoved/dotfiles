@@ -38,7 +38,7 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
 
 - F2 is paste toggle
 
-- stop search with ,<space>
+- stop search by double tapping esc
 
 ### iTerm Settings
 
