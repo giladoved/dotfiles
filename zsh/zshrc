@@ -3,16 +3,38 @@
 # =========================================
 
 # Path
-export PATH="/usr/local/bin:$PATH"
-export PATH="$PATH:$HOME/.rvm/bin"
+export GOPATH=$(go env GOPATH)
 export PATH="$HOME/Library/Haskell/bin:$PATH"
+export PATH=$GOPATH/bin:$PATH
+export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/bin:/bin:$HOME/.cabal/bin:$HOME/.local/bin:$PATH"
+export PATH="$GOPATH/bin:$PATH"
+export PATH="$HOME/.npm-packages/bin:$PATH"
+
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+export PROJECT_HOME=$HOME/dev/vision
+source /usr/local/bin/virtualenvwrapper.sh
+
+export ANDROID_SDK="/Users/giladoved/Library/Android/sdk"
+export ANDROID_NDK="/Users/giladoved/Library/Android/sdk/ndk-bundle"
+export PATH="$PATH:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools:$ANDROID_NDK"
 
 # Term
 export TERM="xterm-256color"
 
+export ANDROID="/Users/giladoved/Library/Android/sdk"
+
+export OPENCV="/Users/giladoved/OpenCV-android-sdk"
+
+alias vlc="/Applications/VLC.app/Contents/MacOS/VLC"
+
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
 # Editor
 export EDITOR=vim
+
+source ~/.bash_profile
 
 # =========================================
 # Settings
@@ -29,6 +51,10 @@ alias clera='clear'
 alias q='exit'
 alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 alias topdu='du -a | sort -nr | head -50'
+alias localgeth='/Users/giladoved/go/src/github.com/ethereum/go-ethereum/build/bin/geth'
+alias sc='cd ~/Documents/SwitchCast/'
+alias scapp='cd ~/Documents/SwitchCast/code/switchcast-android'
+alias ga='cd ~/Documents/ga'
 
 # Theme
 BASE16_SHELL=$HOME/.config/base16-shell/
@@ -38,6 +64,9 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 alias tmuxn='tmux new-session -s $$'
 _trap_exit() { tmux kill-session -t $$; }
 trap _trap_exit EXIT
+
+
+HISTSIZE=10000
 
 
 # =========================================
@@ -61,3 +90,6 @@ export FZF_DEFAULT_OPTS="--extended"
 # bindkey '^[[A' fzf-history-widget
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
