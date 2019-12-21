@@ -29,14 +29,6 @@ echo -e "~~~~~~ NEOVIM ~~~~~~"
 echo -e "... Neovim"
 brewInstall neovim
 
-# install vim plug
-VIM_PLUG_DIR=~/.local/share/nvim/site/autoload/
-if [ ! -f $VIM_PLUG_DIR/plug.vim ]; then
-    echo -e "... Vim Plug"
-    mkdir -p $VIM_PLUG_DIR
-    curl -fLo $VIM_PLUG_DIR/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
-
 # backup current configs
 BACKUP_DIR=~/.backup
 mkdir -p $BACKUP_DIR
@@ -45,8 +37,17 @@ mkdir -p $BACKUP_DIR
 
 # apply neovim configs
 echo -e "Applying neovim configs...\n"
-mkdir -p ~/.nvim
-ln -sf $PWD/neovim/nvimrc ~/.nvim/nvimrc
+NEOVIM_DIR=~/.config/nvim
+mkdir -p $NEOVIM_DIR
+ln -sf $PWD/neovim/init.vim $NEOVIM_DIR/init.vim
+
+# install vim plug
+VIM_PLUG_DIR=~/.config/nvim/autoload
+if [ ! -f $VIM_PLUG_DIR/plug.vim ]; then
+    echo -e "... Vim Plug"
+    mkdir -p $VIM_PLUG_DIR
+    curl -fLo $VIM_PLUG_DIR/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
 
 
 #-------------------------------------------------

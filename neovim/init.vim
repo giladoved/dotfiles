@@ -5,6 +5,8 @@ call plug#begin('~/.config/nvim/plugged')
 " " Vim theme
 " Plug 'chriskempson/base16-vim'
 
+Plug 'mhartington/oceanic-next'
+
 " Commenting support (gc)
 Plug 'tpope/vim-commentary'
 
@@ -39,7 +41,7 @@ colorscheme OceanicNext
 " set nocompatible
 
 " " add line numbers
-" set number
+set number
 
 " " get bash-like tab completions
 " set wildmode=longest,list
