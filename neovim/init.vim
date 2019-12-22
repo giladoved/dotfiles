@@ -27,6 +27,15 @@ Plug 'junegunn/fzf.vim'
 " Super undo
 Plug 'mbbill/undotree'
 
+" Rails highlighting
+Plug 'tpope/vim-rails'
+
+" Rails deoplete
+Plug 'fishbullet/deoplete-ruby'
+
+" Rails testing
+Plug 'janko-m/vim-test'
+
 call plug#end()
 " ==========
 " }}}
@@ -294,6 +303,13 @@ nnoremap <F5> :UndotreeToggle<CR>
 " -- fzf --
 " fuzzy find
 nnoremap <C-t> :Files<CR>
+
+" rails testing
+nmap <silent> <leader>rn :TestNearest<CR>
+nmap <silent> <leader>rf :TestFile<CR>
+nmap <silent> <leader>rl :TestLast<CR>
+
+" ==========
 " }}}
 
 " Custom folds for this settings file = default all folded
