@@ -2,11 +2,11 @@
 
 These are dotfiles that I use to make my workflow most efficient and comfortable. Feel free to fork and customize!
 
-### Screenshot
+## Screenshot
 ![screenshot](screenshot.png)
 
 
-### tmux
+## TMUX
 
 - Prefix is set to CTRL-A. I mapped my CAPS button to CTRL for quick access.
 
@@ -24,41 +24,53 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
 
 - Option select to copy/paste with clipboard
 
-### vim
+## NEOVIM
 
-Plug-in control
+### Plug-ins:
+#####  Fuzzy Find [(fzf)](https://github.com/junegunn/fzf)
+- Activate with Control-t.
 
-- Control-t fuzzy finds files
+- Cancel with Control-c.
 
-- Control-n for autocomplete
+##### Autocomplete [(deoplete)](https://github.com/Shougo/deoplete.nvim) 
+- While typing, press Control-n to see possible completions.
 
-- <,><n><t> opens up the directory viewer
-  
-- undo tree with <F5>
+- Esc to cancel.
 
-Features:
-- persistant undos
+##### Directory Tree Viewer [(NERDTree)](https://github.com/scrooloose/nerdtree) 
+- Toggle with ',' followed by 'n' 't'.
 
-- no need to press shift when typing colon :
+- Refresh with ',' followed by 'n' 'r'.
 
-- <F2> is paste toggle
+- Toggle hidden files with Shift i.
 
-- stop search by double tapping <esc>
+##### Undo Tree [(undotree)](https://github.com/mbbill/undotree) 
+- View undo history with F5.
 
-- open/close fold with <space>
-  
-- comment by typing <g><c> on highlighted code
-  
-- jk to <esc>
-  
-- ,s to save session and vim -S to restore
+##### Commenting [(vim-commentary)](https://github.com/tpope/vim-commentary)
+- To toggle comments, press 'g' 'c' on a highlighted block of code.
 
-- cu to clean-up - reformats file
+### Features:
 
-- highlights trailing whitespace, removes them on save
+- Persistant undos (allows undos even after closing and reopening a file)
 
-- highlights lines that are too long
+- No need to press shift while typing : (remaps ; to :)
 
+- Use F2 to toggle paste mode
+
+- Abort vim search by double tapping ESC
+
+- Open/close folds with SPACE
+
+- Use 'j' 'k' to ESCAPE (remaps jk to ESC)
+
+- Save session with ',' 's'. Use vim -S to restore
+
+- Reformat your whole file with 'cu' (clean-up)
+
+- Highlights trailing whitespace or extralong lines
+
+- Removes trailing whitespace on save
 
 
 ### iTerm Settings
