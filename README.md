@@ -26,12 +26,17 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
 
 ### vim
 
+Plug-in control
+
 - Control-t fuzzy finds files
 
 - Control-n for autocomplete
 
 - <,><n><t> opens up the directory viewer
+  
+- undo tree with <F5>
 
+Features:
 - persistant undos
 
 - no need to press shift when typing colon :
@@ -44,11 +49,17 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
   
 - comment by typing <g><c> on highlighted code
   
-- undo tree with <F5>
-  
 - jk to <esc>
   
 - ,s to save session and vim -S to restore
+
+- cu to clean-up - reformats file
+
+- highlights trailing whitespace, removes them on save
+
+- highlights lines that are too long
+
+
 
 ### iTerm Settings
 
