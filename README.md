@@ -43,6 +43,12 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
 - open/close fold with <space>
   
 - comment by typing <g><c> on highlighted code
+  
+- undo tree with <F5>
+  
+- jk to <esc>
+  
+- ,s to save session and vim -S to restore
 
 ### iTerm Settings
 
