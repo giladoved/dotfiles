@@ -1,6 +1,6 @@
 # My Dotfiles
 
-These are dotfiles that I use to make my workflow most efficient and comfortable. Feel free to fork and customize!
+These are dotfiles that I use to make my workflow the most efficient and comfortable. Feel free to fork and customize!
 
 ## Screenshot
 ![screenshot](screenshot.png)
@@ -73,13 +73,13 @@ These are dotfiles that I use to make my workflow most efficient and comfortable
 - Removes trailing whitespace on save
 
 
-### iTerm Settings
+## iTerm Settings
 
 - For the same terminal color theme as vim: set the theme to `base16-oceanicnext.dark.256.itermcolors`
 
 - Automatically join your running tmux session by sending the following text at start: `tmux attach -t mysession || tmux new -s mysession`
 
-### Steps to adapt
+## Steps to adapt
 
 1. Fork / clone the repo
 
