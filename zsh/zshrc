@@ -83,3 +83,6 @@ RPROMPT='%D{%K:%M:%S} %D{%m/%f}'
 # search for past command with fzf
 export FZF_DEFAULT_OPTS="--extended"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
