@@ -50,6 +50,11 @@ These are dotfiles that I use to make my workflow the most efficient and comfort
 ##### Commenting [(vim-commentary)](https://github.com/tpope/vim-commentary)
 - To toggle comments, press 'g' 'c' on a highlighted block of code.
 
+##### Rails Testing [(vim-test)](https://github.com/janko/vim-test)
+- Run nearest test, ',' followed by 'r' 'n'
+- Run tests in whole file, ',' followed by 'r' 'f'
+- Run last test, ',' followed by 'r' 'l'
+
 ### Features:
 
 - Persistant undos (allows undos even after closing and reopening a file)
