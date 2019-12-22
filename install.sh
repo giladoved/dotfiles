@@ -8,16 +8,18 @@
 #-------------------------------------------------
 
 echo -e "#-------------------------------------------------"
-echo -e "# Setting Gilad Dotfiles"
+echo -e "# Gilad Dotfiles Installation"
 echo -e "#-------------------------------------------------"
 echo -e ""
 
 
 #-------------------------------------------------
-# Util functions
+# Global vars & functions
 #-------------------------------------------------
 
 brewInstall() { if brew ls --versions "$1"; then brew upgrade "$1"; else brew install "$1"; fi }
+
+BACKUP_DIR=~/.backup
 
 
 #-------------------------------------------------
@@ -30,16 +32,14 @@ echo -e "... Neovim"
 brewInstall neovim
 
 # backup current configs
-BACKUP_DIR=~/.backup
+echo -e "... Backing up to ~/.backup"
 mkdir -p $BACKUP_DIR
 [ -f ~/.vimrc ] && cat ~/.vimrc > $BACKUP_DIR/vimrc && rm ~/.vimrc
 [ -f ~/.nvim/nvimrc ] && cat ~/.nvim/nvimrc > $BACKUP_DIR/nvimrc && rm ~/.nvim/nvimrc
 
-# apply neovim configs
-echo -e "Applying neovim configs...\n"
+# setup neovim dir
 NEOVIM_DIR=~/.config/nvim
 mkdir -p $NEOVIM_DIR
-ln -sf $PWD/neovim/init.vim $NEOVIM_DIR/init.vim
 
 # install vim plug
 VIM_PLUG_DIR=~/.config/nvim/autoload
@@ -48,6 +48,11 @@ if [ ! -f $VIM_PLUG_DIR/plug.vim ]; then
     mkdir -p $VIM_PLUG_DIR
     curl -fLo $VIM_PLUG_DIR/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
+
+# apply neovim configs
+echo -e "... Applying neovim configs"
+ln -sf $PWD/neovim/init.vim $NEOVIM_DIR/init.vim
+echo -e "~~~~~~~~~~~~~~~~~~~~\n"
 
 
 #-------------------------------------------------
@@ -76,19 +81,27 @@ fi
 #-------------------------------------------------
 # Configuring zsh
 #-------------------------------------------------
-# echo -e "~~~ zsh ~~~"
+echo -e "~~~~~~ ZSH ~~~~~~"
 
-# if [ ! -f ~/.zshrc ]; then
-# 	echo -e "Applying zsh configs...\n"
-# 	ln -sf $PWD/zsh/zshrc ~/.zshrc
-# elif [[ $1 = "-f" ]]; then
-# 	echo -e "Replacing current zsh configs with new ones...\n"
-# 	rm ~/.zshrc
-# 	ln -sf $PWD/zsh/zshrc ~/.zshrc
-# else
-# 	echo -e "zsh configs already exist on this machine. Rerun this script with the option '-f' to replace the current configs with the ones from the repo.\n"
-# fi
+# install color theme
+COLORTHEME_DIR=~/.config/oceanic-next-shell
+if [ ! -d $COLORTHEME_DIR ]; then
+  echo -e "... Color theme"
+  git clone https://github.com/mhartington/oceanic-next-shell.git ~/.config/oceanic-next-shell
+fi
 
-# source ~/.zshrc
+# backup current zshrc
+echo -e "... Backing up to ~/.backup"
+[ -f ~/.zshrc ] && cat ~/.zshrc > $BACKUP_DIR/zshrc && rm ~/.zshrc
 
-echo -e "\nThank you for installing Gilad's dotfiles!"
+echo -e "... Importing zsh configs"
+ln -sf $PWD/zsh/zshrc ~/.zshrc
+echo -e "~~~~~~~~~~~~~~~~~~~~\n"
+
+
+# last steps and thank you
+echo -e "Installation complete. The following actions are required before usage:"
+echo -e "1. Open vim"
+echo -e "2. Enter the command :PlugInstall"
+echo -e "3. Restart the terminal\n"
+echo -e "Thank you for installing Gilad's dotfiles!"

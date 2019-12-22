@@ -1,95 +1,85 @@
+# ===================================
+# ======== Gilad Oved © 2019 ========
+# ========= zsh config file =========
+# ===================================
+
+# ===================================
+# Other configs
+# ===================================
+# advark
+source ~/.advarkrc
+
+
+# ===================================
+# Color Theme
+# ===================================
+BASE16_SHELL="$HOME/.config/oceanic-next-shell/oceanic-next.dark.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+
+
+# ===================================
+# Path
+# ===================================
+export ANDROID_SDK=~/Library/Android/sdk
+export ANDROID_NDK=~/Library/Android/sdk/ndk-bundle
+export PATH=${PATH}:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools:$ANDROID_NDK
+
+
+# ===================================
+# Custom Functions
+# ===================================
+# set the title of a tab
+function title {
+    echo -ne "\033]0;"$*"\007"
+}
+
+
 # =========================================
 # Exports
 # =========================================
-
-# Path
-export GOPATH=$(go env GOPATH)
-export PATH="$HOME/Library/Haskell/bin:$PATH"
-export PATH=$GOPATH/bin:$PATH
-export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/bin:/bin:$HOME/.cabal/bin:$HOME/.local/bin:$PATH"
-export PATH="$GOPATH/bin:$PATH"
-export PATH="$HOME/.npm-packages/bin:$PATH"
-
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
-export PROJECT_HOME=$HOME/dev/vision
-source /usr/local/bin/virtualenvwrapper.sh
-
-export ANDROID_SDK="/Users/giladoved/Library/Android/sdk"
-export ANDROID_NDK="/Users/giladoved/Library/Android/sdk/ndk-bundle"
-export PATH="$PATH:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools:$ANDROID_NDK"
-
-# Term
-export TERM="xterm-256color"
-
-export ANDROID="/Users/giladoved/Library/Android/sdk"
-
-export OPENCV="/Users/giladoved/OpenCV-android-sdk"
-
-alias vlc="/Applications/VLC.app/Contents/MacOS/VLC"
-
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
-# Editor
 export EDITOR=vim
+if type nvim > /dev/null 2>&1; then
+  export EDITOR=nvim
+fi
 
-source ~/.bash_profile
 
 # =========================================
-# Settings
+# Alias
 # =========================================
-
-# Aliases
 if type nvim > /dev/null 2>&1; then
   alias vim='nvim'
   alias vi='nvim'
-  export EDITOR=nvim
 fi
-alias matlab='/Applications/MATLAB_R2016b.app/bin/matlab'
 alias clera='clear'
-alias q='exit'
 alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 alias topdu='du -a | sort -nr | head -50'
-alias localgeth='/Users/giladoved/go/src/github.com/ethereum/go-ethereum/build/bin/geth'
-alias sc='cd ~/Documents/SwitchCast/'
-alias scapp='cd ~/Documents/SwitchCast/code/switchcast-android'
-alias ga='cd ~/Documents/ga'
-
-# Theme
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-
-# Detach tmux when closing iterm
-alias tmuxn='tmux new-session -s $$'
-_trap_exit() { tmux kill-session -t $$; }
-trap _trap_exit EXIT
 
 
+# =========================================
+# Properties
+# =========================================
+# increase number of remembered commands
 HISTSIZE=10000
 
 
 # =========================================
 # Prompt
 # =========================================
-
-#export PS1="%m~/%C$ "
 autoload -U colors && colors
 PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
+RPROMPT='%D{%K:%M:%S} %D{%m/%f}'
 
 # =========================================
-# Bottom of the zshrc file
+# Tmux
 # =========================================
+# Detach tmux when closing iterm
+# alias tmuxn='tmux new-session -s $$'
+# _trap_exit() { tmux kill-session -t $$; }
+# trap _trap_exit EXIT
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
-# fzf options
+# =========================================
+# End of file
+# =========================================
+# search for past command with fzf
 export FZF_DEFAULT_OPTS="--extended"
-
-# up to bring up fzf
-# bindkey '^[[A' fzf-history-widget
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
