@@ -53,6 +53,10 @@ fi
 alias clera='clear'
 alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 alias topdu='du -a | sort -nr | head -50'
+alias rm='rm -i'
+alias dd='echo "no dd command available"'
+alias chmod='chmod --preserve-root'
+alias chown='chown --preserve-root'
 
 
 # =========================================

@@ -28,7 +28,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 
 " Rails highlighting
-Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rails', { 'for': ['ruby', 'eruby', 'haml', 'slim'] }
+
+" Rails do end autowriting
+Plug 'tpope/vim-endwise'
 
 " Rails deoplete
 Plug 'fishbullet/deoplete-ruby'
@@ -87,7 +90,7 @@ set autoindent
 set number
 
 " highlight the current line the cursor is on
-set cursorline
+" set cursorline
 
 " do not redraw in the middle of macros
 set lazyredraw
