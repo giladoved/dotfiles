@@ -1,58 +1,500 @@
 " =================================== "
-" ======== Gilad Oved © 2019 ========
+" ======== Gilad Oved © 2020 ========
 " ======== neovim config file =======
 " ====== inspired by dougblack ======
+" ====== inspired by martin-svk =====
 " =================================== "
 
 " Plugins {{{
 " ==========
+
+" Auto install Plug
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall
+endif
+
 call plug#begin('~/.config/nvim/plugged')
+
+" --------------------------------------------------
+" 1.1 General tools - colors, linters, formatting, etc.
+" --------------------------------------------------
 
 " Vim Color Theme
 Plug 'mhartington/oceanic-next'
-
-" Commenting support (gc)
+" Commenting support (gc), gcc to comment line
 Plug 'tpope/vim-commentary'
+" CamelCase and snake_case motions
+Plug 'bkad/CamelCaseMotion'
+" Auto tabbing and spacing
+Plug 'tpope/vim-sleuth'
+" Autocomplete
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Smooth scrolling
+Plug 'psliwka/vim-smoothie'
+" Intelligent buffer closing
+Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
+" Vim Maximizer will make the current window 'fullscreen'
+Plug 'szw/vim-maximizer'
 
-" Directory viewer
-Plug 'scrooloose/nerdtree'
 
-" Autocomplete ctrl-n
-Plug 'Shougo/deoplete.nvim'
+" --------------------------------------------------
+" 1.2 Javascript
+" --------------------------------------------------
 
-" Fuzzy find
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+" Javascript
+Plug 'pangloss/vim-javascript'
+" JSX
+Plug 'mxw/vim-jsx', { 'for': ['jsx', 'javascript.jsx'] }
+" JSX React
+Plug 'peitalin/vim-jsx-typescript'
+" Typescript
+Plug 'leafgarland/typescript-vim'
 
-" Super undo
-Plug 'mbbill/undotree'
+
+" --------------------------------------------------
+" 1.3 HTML/CSS
+" --------------------------------------------------
+
+" HTML5 syntax
+Plug 'othree/html5.vim'
+" HTML Tag Closing
+Plug 'alvan/vim-closetag'
+" SCSS syntax
+Plug 'cakebaker/scss-syntax.vim'
+" Color highlighter
+Plug 'lilydjwg/colorizer', { 'for': ['css', 'sass', 'scss', 'less', 'html', 'xdefaults', 'javascript', 'javascript.jsx', 'vim'] }
+
+
+" --------------------------------------------------
+" 1.4 Ruby
+" --------------------------------------------------
 
 " Rails highlighting
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'eruby', 'haml', 'slim'] }
-
 " Rails do end autowriting
 Plug 'tpope/vim-endwise'
-
-" Rails deoplete
-Plug 'fishbullet/deoplete-ruby'
-
 " Rails testing
 Plug 'janko-m/vim-test'
+
+
+" --------------------------------------------------
+" 1.5 Other languages
+" --------------------------------------------------
+
+" Elixir syntax
+Plug 'elixir-lang/vim-elixir'
+" Yaml indentation
+Plug 'martin-svk/vim-yaml'
+" Markdown syntax
+Plug 'tpope/vim-markdown'
+" Git syntax
+Plug 'tpope/vim-git'
+" Tmux syntax
+Plug 'keith/tmux.vim'
+" Dockerfile
+Plug 'honza/dockerfile.vim'
+" GraphQL
+Plug 'jparise/vim-graphql'
+"JSON syntax
+Plug 'sheerun/vim-json'
+
+
+" --------------------------------------------------
+" 1.6  FZF Fuzzy Searcher
+" --------------------------------------------------
+
+" Fuzzy find
+Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+
+
+" --------------------------------------------------
+" 1.7 Interface improving
+" --------------------------------------------------
+
+" Directory viewer
+Plug 'scrooloose/nerdtree'
+" Lightline (simple status line)
+Plug 'itchyny/lightline.vim'
+" Super undo - F5
+Plug 'mbbill/undotree'
+
 
 call plug#end()
 " ==========
 " }}}
 
+
+" basic settings
+set shell=/bin/zsh                          " Setting shell to zsh
+set number                                  " Just absolute numbers
+set showmode                                " Always show mode
+set nowrap                                  " Do not wrap long line
+set showcmd                                 " Show commands as you type them
+set cmdheight=1                             " Command line height
+set pumheight=10                            " Completion window max size
+set noswapfile                              " New buffers will be loaded without creating a swapfile
+set clipboard+=unnamed                      " Allow to use system clipboard
+
+                                            " As it turns out, there is a negative performce issue when having lazy redraw
+                                            " on while use tmux. It causes an ugly redraw that makes the entire pane blank
+set nolazyredraw                            " Don't redraw while executing macros (better performance)
+
+set showmatch                               " Show matching brackets when text indicator is over them
+set matchtime=2                             " How many tenths of a second to blink when matching brackets
+set nostartofline                           " Keep cursor in the same column when moving up or down
+set virtualedit=block                       " To be able to select past EOL in visual block mode
+set nojoinspaces                            " No extra space when joining a line which ends with . ? !
+set scrolloff=5                             " Scroll when closing to top or bottom of the screen
+set updatetime=300                          " Update time used to create swap file or other things
+set suffixesadd+=.js,.rb                    " Add js and ruby files to suffixes, to help 'gf'
+set cursorline                              " Highlight the active line but only style the line number highlight
+
+" split settings
+set splitbelow                              " Splitting a window will put the new window below the current
+set splitright                              " Splitting a window will put the new window right of the current
+
+" timeout settings
+" Time out on key codes but not mappings.
+" Basically this makes terminal Vim work sanely. (by Steve Losh)
+set notimeout
+set ttimeout
+set ttimeoutlen=10
+
+" search
+set ignorecase                              " Ignore case by default
+set smartcase                               " Make search case sensitive only if it contains uppercase letters
+set wrapscan                                " Search again from top when reached the bottom
+set nohlsearch                              " Don't highlight after search
+
+" undo history
+if has('persistent_undo')
+  set undofile                              " Save undos when file is closed
+  set undodir=~/.config/nvim/tmp/undo//     " Persistant undo history
+  set undolevels=1000                       " Number of changes to save for undo
+  set history=200                          " Number of vim commands and search history to save
+endif
+
+" Whitespace characters
+set list                                    " Show listchars by default
+set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:·
+
+" Filetype settings
+filetype plugin on
+filetype indent on
+
+" folding settings
+" set foldmethod=marker                       " Markers are used to specify folds.
+" set foldlevel=2                             " Start folding automatically from level 2
+" set fillchars="fold: "                      " Characters to fill the statuslines and vertical separators
+
+"omni completion
+set completeopt-=preview                    " Don't show preview scratch buffers
+set wildignore=*.o,*.obj,*~
+set wildignore+=*vim/backups*
+set wildignore+=*sass-cache*
+set wildignore+=*DS_Store*
+set wildignore+=*.gem
+set wildignore+=tmp/**
+set wildignore+=*.pyc,*.class,*.lo,.git
+
+" neovim settings
+let g:loaded_python_provider=1              " Disable python 2 interface
+let g:python_host_skip_check=1              " Skip python 2 host check
+" Creates a special virtualenvironment for neovim so packages do not need to
+" be reinstalled in each new virtual environment
+let g:python3_host_prog=$HOME."/.pyenv/versions/neovim_python_venv/bin/python"
+
+
+
+
+" Mappings
+let g:mapleader=","                         " Set leader to comma
+
+" disable arrow keys to become legit
+nnoremap <up> <NOP>
+nnoremap <down> <NOP>
+nnoremap <left> <NOP>
+nnoremap <right> <NOP>
+inoremap <up> <NOP>
+inoremap <down> <NOP>
+inoremap <left> <NOP>
+inoremap <right> <NOP>
+
+" easier window switching
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Native Neovim terminal switching
+tnoremap <Esc> <C-\><C-n>
+" tnoremap <C-h> <C-\><C-n><C-w>h
+tnoremap <C-j> <C-\><C-n><C-w>j
+tnoremap <C-k> <C-\><C-n><C-w>k
+tnoremap <C-l> <C-\><C-n><C-w>l
+
+" Move cursor by display lines when wrapping
+nnoremap j gj
+nnoremap k gk
+vnoremap j gj
+vnoremap k gk
+
+" use gj gk to go quicker
+nnoremap gj 5j
+nnoremap gk 5k
+vnoremap gj 5j
+vnoremap gk 5k
+
+" When jump to next match also center screen
+" Note: Use :norm! to make it count as one command. (i.e. for i_CTRL-o)
+nnoremap <silent> n :norm! nzz<CR>
+nnoremap <silent> N :norm! Nzz<CR>
+vnoremap <silent> n :norm! nzz<CR>
+vnoremap <silent> N :norm! Nzz<CR>
+
+" " Same when moving up and down
+" nnoremap <C-u> <C-u>zz
+" nnoremap <C-d> <C-d>zz
+" nnoremap <C-f> <C-f>zz
+" nnoremap <C-b> <C-b>zz
+" vnoremap <C-u> <C-u>zz
+" vnoremap <C-d> <C-d>zz
+" vnoremap <C-f> <C-f>zz
+" vnoremap <C-b> <C-b>zz
+
+" H and L to go to beginning and end of line
+nnoremap H ^
+nnoremap L $
+vnoremap H ^
+vnoremap L g_
+
+" More logical Y (default was alias for yy)
+nnoremap Y y$
+
+" Don't yank to default register when changing something
+nnoremap c "xc
+xnoremap c "xc
+
+" After block yank and paste, move cursor to the end of operated text and don't override register
+vnoremap y y`]
+vnoremap p "_dP`]
+nnoremap p p`]
+
+" Use CamelCaseMotion instead of default motions
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+map <silent> ge <Plug>CamelCaseMotion_ge
+sunmap w
+sunmap b
+sunmap e
+sunmap ge
+
+" Fix the cw at the end of line bug default vim has special treatment (:help cw)
+nmap cw ce
+nmap dw de
+
+" Uppercases word in insert mode
+inoremap <C-u> <ESC>mzgUiw`za
+
+" Matching brackets with TAB (using matchit) (Breaks the <C-i> jump)
+map <TAB> %
+silent! unmap [%
+silent! unmap ]%
+
+" Don't cancel visual select when shifting
+xnoremap <  <gv
+xnoremap >  >gv
+
+" Terminal mode mappings
+if has('nvim')
+  tnoremap <ESC> <C-\><C-n>
+  tnoremap ,<ESC> <ESC>
+endif
+
+" Stay down after creating fold
+vnoremap zf mzzf`zzz
+
+" common tasks
+" Quick save and close buffer
+nnoremap <leader>s :w<CR>
+nnoremap <silent> <leader>w :Sayonara!<CR>
+nnoremap <silent> <leader>q :Sayonara<CR>
+
+" Yank and paste from clipboard
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+nnoremap <leader>yy "+yy
+nnoremap <leader>p "+p
+
+" Move visual block
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" Reselect last-pasted text
+nnoremap gp `[v`]
+
+" Keep the cursor in place while joining lines
+nnoremap J mzJ`z
+
+" [S]plit line (sister to [J]oin lines) S is covered by cc.
+nnoremap S mzi<CR><ESC>`z
+
+" Start substitute on current word under the cursor
+" nnoremap <Space>s :%s///gc<Left><Left><Left>
+
+" Start search on current word under the cursor
+" nnoremap <Space>/ /<CR>
+
+" Start reverse search on current word under the cursor
+" nnoremap <Space>? ?<CR>
+
+" Faster sort
+" vnoremap <Space>s :!sort<CR>
+
+" windows and buffers
+
+" Buffers navigation and management
+nnoremap <silent> + :bn<CR>
+nnoremap <silent> _ :bp<CR>
+
+" ALT-HJKL to change 10x horizontal window resize
+map <silent> ¬ 10<C-w>>
+map <silent> ˙ 10<C-w><
+map <silent> ∆ 10<C-w>-
+map <silent> ˚ 10<C-w>+
+
+" Toggle fullscreen window
+nnoremap <silent> <C-w>z :MaximizerToggle<CR>
+inoremap <silent> <C-w>z :MaximizerToggle<CR>
+
+" Quiting and saving all
+cnoremap ww wqall
+cnoremap qq qall
+
+
+" jk is <esc> in insert mode
+inoremap jk <esc>
+
+" no need to press shift ; for every vim command
+nnoremap ; :
+
+" no vim backup
+set nobackup
+
+" turn off search highlight with <esc><esc> (double tab escape)
+nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
+
+
+
+" Make sure Vim returns to the same line when you reopen a file. Thanks, Amit and Steve Losh.
+augroup line_return
+  au!
+  au BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \     execute 'normal! g`"zvzz' |
+        \ endif
+augroup END
+
+
+
+
+
+" Plugin settings
+
+" vimplug
+nnoremap <leader>pi :PlugInstall<CR>
+nnoremap <leader>pu :PlugUpdate<CR>
+nnoremap <leader>pU :PlugUpgrade<CR>
+nnoremap <leader>pc :PlugClean<CR>
+
+
+
+
+
+
+
+" = lightline
+let g:lightline = {
+      \ 'colorscheme': 'jellybeans',
+      \ 'tab': {
+      \   'active': [ 'filename' ],
+      \   'inactive': [ 'filename' ]
+      \ },
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename' ], [ 'session' ],  ['cocstatus' ] ],
+      \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding' ] ]
+      \ },
+      \ 'component': {
+      \   'readonly': '%{&filetype=="help"?"HELP":&readonly?"RO":""}'
+      \ },
+      \ 'component_function': {
+      \   'mode': 'utils#lightLineMode',
+      \   'filename': 'utils#lightLineFilename',
+      \   'fileencoding': 'utils#lightLineFileencoding',
+      \   'cocstatus': 'coc#status',
+      \ },
+      \ 'component_expand': {
+      \   'session': 'utils#lightLineSession'
+      \ },
+      \ 'component_visible_condition': {
+      \   'readonly': '(&readonly)'
+      \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' }
+      \ }
+
+" Changes the lightline middle color for the active buffer
+" This helps a lot with finding out which split is active
+" Howver it's confusing as to which 256 color is magenta (the one set in alacritty.yaml)
+let s:palette = g:lightline#colorscheme#{g:lightline.colorscheme}#palette
+" Active buffer gets yellow middle bar color
+let s:palette.normal.middle = [ [ "#30302c", "#1f9966", 236, 222 ] ]
+" Inctive buffers get usual middle bar color
+let s:palette.inactive.middle = [ [ "#30302c", "#30302c", 236, 236 ] ]
+
+
+
 " Colors {{{
 " ==========
+" Syntax highlighting
+syntax on
+
 " OceanicNext colorscheme requires termguicolors
-set termguicolors
+if (has("termguicolors"))
+  set termguicolors
+end
 
-" enable syntax processing
-syntax enable
-
-" set color theme
+" Color scheme
 colorscheme OceanicNext
+" colorscheme base16-railscasts
+" colorscheme base16-ocean
+
+" ==========
+" }}}
+
+" Spelling {{{
+" ==========
+set spellfile=~/.config/nvim/spell/dictionary.utf-8.add
+set spelllang=en_us                         " Set language to US English
+set nospell                                 " Disable checking by default
+
+" Fix spelling error on the go
+inoremap <C-s> <C-g>u<ESC>[s1z=`]a<C-g>u
+
+" Fix spelling error in normal mode
+nnoremap <C-s> <C-g>u<ESC>[s1z=`]a<C-g>u
+
+" toggle spelling with F4 key
+map <F4> :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
+
+"Turn spellcheck on for markdown files
+autocmd BufNewFile,BufRead *.md setlocal spell
+autocmd BufNewFile,BufRead *.md setlocal tw=80
+
+" = SPELLING
 " ==========
 " }}}
 
@@ -81,6 +523,7 @@ set backspace=indent,eol,start
 
 " indent a new line the same amount as the line just typed
 set autoindent
+
 " ==========
 " }}}
 
@@ -295,9 +738,13 @@ endf
 " -- NERDTree --
 " which file types NERDtree should ignore
 let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.py\$class$', '\.obj$', '\.o$', '\.so$', '^\.git$', '__pycache__', '\.DS_Store', '\.class$' ]
-
 " toggling NERDTree
 map <silent> <leader>nt :NERDTreeToggle<CR>
+" NERDTree wrapper
+" nnoremap <silent> <Space>n :call utils#nerdWrapper()<CR>
+" Source (reload configuration)
+nnoremap <silent> <F5> :source $MYNVIMRC<CR>
+
 
 " -- undotree --
 " toggle super undo with <F5>
@@ -312,8 +759,11 @@ nmap <silent> <leader>rn :TestNearest<CR>
 nmap <silent> <leader>rf :TestFile<CR>
 nmap <silent> <leader>rl :TestLast<CR>
 
+
+
 " ==========
 " }}}
+
 
 " Custom folds for this settings file = default all folded
 " vim:foldmethod=marker:foldlevel=0
