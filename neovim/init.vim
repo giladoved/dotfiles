@@ -1,9 +1,8 @@
-" =================================== "
-" ======== Gilad Oved © 2020 ========
-" ======== neovim config file =======
-" ====== inspired by dougblack ======
-" ====== inspired by martin-svk =====
-" =================================== "
+" ============================================ "
+"  Created On           : August 6th, 2017
+"  Forked from          : thebearjew/dotfiles
+" ============================================ "
+
 
 " Plugins {{{
 " ==========
@@ -99,6 +98,12 @@ Plug 'honza/dockerfile.vim'
 Plug 'jparise/vim-graphql'
 "JSON syntax
 Plug 'sheerun/vim-json'
+" JSON5 syntax
+Plug 'GutenYe/json5.vim'
+" Elm
+Plug 'elmcast/elm-vim'
+" Tmux syntax
+Plug 'keith/tmux.vim'
 
 
 " --------------------------------------------------
@@ -126,71 +131,55 @@ call plug#end()
 " }}}
 
 
-" basic settings
+" Basic Settings {{{
+" ==========
+
+let g:mapleader=","                         " Set leader to comma
+
 set shell=/bin/zsh                          " Setting shell to zsh
-set number                                  " Just absolute numbers
-set showmode                                " Always show mode
-set nowrap                                  " Do not wrap long line
-set showcmd                                 " Show commands as you type them
-set cmdheight=1                             " Command line height
-set pumheight=10                            " Completion window max size
-set noswapfile                              " New buffers will be loaded without creating a swapfile
-set clipboard+=unnamed                      " Allow to use system clipboard
+set updatetime=300                          " Time Vim waits after you stop typing before it triggers the plugin
+set nostartofline                           " Keep cursor in the same column when moving up or down
+set virtualedit=block                       " To be able to select past EOL in visual block mode
+set scrolloff=5                             " Scroll when closing to top or bottom of the screen
+
+" ==========
+" }}}
+
+
+" UI {{{
+" ==========
+
+set cursorline                              " Highlight the active line but only style the line number highlight
+set showmatch                               " Show matching brackets when text indicator is over them
+set matchtime=2                             " How many tenths of a second to blink when matching brackets
 
                                             " As it turns out, there is a negative performce issue when having lazy redraw
                                             " on while use tmux. It causes an ugly redraw that makes the entire pane blank
 set nolazyredraw                            " Don't redraw while executing macros (better performance)
 
-set showmatch                               " Show matching brackets when text indicator is over them
-set matchtime=2                             " How many tenths of a second to blink when matching brackets
-set nostartofline                           " Keep cursor in the same column when moving up or down
-set virtualedit=block                       " To be able to select past EOL in visual block mode
-set nojoinspaces                            " No extra space when joining a line which ends with . ? !
-set scrolloff=5                             " Scroll when closing to top or bottom of the screen
-set updatetime=300                          " Update time used to create swap file or other things
-set suffixesadd+=.js,.rb                    " Add js and ruby files to suffixes, to help 'gf'
-set cursorline                              " Highlight the active line but only style the line number highlight
+set showcmd                                 " Show commands as you type them
+set number                                  " Just absolute numbers
+set showmode                                " Always show mode
+set nowrap                                  " Do not wrap long line
+set cmdheight=1                             " Command line height
+set pumheight=10                            " Completion window max size
+set visualbell                              " turn off error flashing
+set errorbells                              " turn off error beeping
 
-" split settings
-set splitbelow                              " Splitting a window will put the new window below the current
-set splitright                              " Splitting a window will put the new window right of the current
+" ==========
+" }}}
 
-" timeout settings
-" Time out on key codes but not mappings.
-" Basically this makes terminal Vim work sanely. (by Steve Losh)
-set notimeout
-set ttimeout
-set ttimeoutlen=10
 
-" search
+" Search {{{
+" ==========
+
 set ignorecase                              " Ignore case by default
 set smartcase                               " Make search case sensitive only if it contains uppercase letters
 set wrapscan                                " Search again from top when reached the bottom
 set nohlsearch                              " Don't highlight after search
-
-" undo history
-if has('persistent_undo')
-  set undofile                              " Save undos when file is closed
-  set undodir=~/.config/nvim/tmp/undo//     " Persistant undo history
-  set undolevels=1000                       " Number of changes to save for undo
-  set history=200                          " Number of vim commands and search history to save
-endif
-
-" Whitespace characters
-set list                                    " Show listchars by default
-set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:·
-
-" Filetype settings
-filetype plugin on
-filetype indent on
-
-" folding settings
-" set foldmethod=marker                       " Markers are used to specify folds.
-" set foldlevel=2                             " Start folding automatically from level 2
-" set fillchars="fold: "                      " Characters to fill the statuslines and vertical separators
-
-"omni completion
 set completeopt-=preview                    " Don't show preview scratch buffers
+
+" wildcard ignore for search
 set wildignore=*.o,*.obj,*~
 set wildignore+=*vim/backups*
 set wildignore+=*sass-cache*
@@ -199,18 +188,56 @@ set wildignore+=*.gem
 set wildignore+=tmp/**
 set wildignore+=*.pyc,*.class,*.lo,.git
 
-" neovim settings
-let g:loaded_python_provider=1              " Disable python 2 interface
-let g:python_host_skip_check=1              " Skip python 2 host check
-" Creates a special virtualenvironment for neovim so packages do not need to
-" be reinstalled in each new virtual environment
-let g:python3_host_prog=$HOME."/.pyenv/versions/neovim_python_venv/bin/python"
+" ==========
+" }}}
 
 
+" History {{{
+" ==========
+
+if has('persistent_undo')
+  set undofile                              " Save undos when file is closed
+  set undodir=~/.config/nvim/tmp/undo//     " Persistant undo history
+  set undolevels=10000                      " Number of changes to save for undo
+  set history=200                           " Number of vim commands and search history to save
+endif
+
+set noswapfile                              " New buffers will be loaded without creating a swapfile
+set nobackup                                " No vim backup
+
+" ==========
+" }}}
 
 
-" Mappings
-let g:mapleader=","                         " Set leader to comma
+" Windows {{{
+" ==========
+
+" easier window switching
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" split settings
+set splitbelow                              " Splitting a window will put the new window below the current
+set splitright                              " Splitting a window will put the new window right of the current
+
+" ALT-HJKL to change 10x horizontal window resize
+map <silent> ¬ 10<C-w>>
+map <silent> ˙ 10<C-w><
+map <silent> ∆ 10<C-w>-
+map <silent> ˚ 10<C-w>+
+
+" Toggle fullscreen window
+nnoremap <silent> <C-a>z :MaximizerToggle<CR>
+inoremap <silent> <C-a>z :MaximizerToggle<CR>
+
+" ==========
+" }}}
+
+
+" Shortcuts {{{
+" ==========
 
 " disable arrow keys to become legit
 nnoremap <up> <NOP>
@@ -221,19 +248,6 @@ inoremap <up> <NOP>
 inoremap <down> <NOP>
 inoremap <left> <NOP>
 inoremap <right> <NOP>
-
-" easier window switching
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-
-" Native Neovim terminal switching
-tnoremap <Esc> <C-\><C-n>
-" tnoremap <C-h> <C-\><C-n><C-w>h
-tnoremap <C-j> <C-\><C-n><C-w>j
-tnoremap <C-k> <C-\><C-n><C-w>k
-tnoremap <C-l> <C-\><C-n><C-w>l
 
 " Move cursor by display lines when wrapping
 nnoremap j gj
@@ -308,26 +322,10 @@ silent! unmap ]%
 xnoremap <  <gv
 xnoremap >  >gv
 
-" Terminal mode mappings
-if has('nvim')
-  tnoremap <ESC> <C-\><C-n>
-  tnoremap ,<ESC> <ESC>
-endif
-
-" Stay down after creating fold
-vnoremap zf mzzf`zzz
-
-" common tasks
 " Quick save and close buffer
 nnoremap <leader>s :w<CR>
 nnoremap <silent> <leader>w :Sayonara!<CR>
 nnoremap <silent> <leader>q :Sayonara<CR>
-
-" Yank and paste from clipboard
-nnoremap <leader>y "+y
-vnoremap <leader>y "+y
-nnoremap <leader>yy "+yy
-nnoremap <leader>p "+p
 
 " Move visual block
 vnoremap J :m '>+1<CR>gv=gv
@@ -342,52 +340,15 @@ nnoremap J mzJ`z
 " [S]plit line (sister to [J]oin lines) S is covered by cc.
 nnoremap S mzi<CR><ESC>`z
 
-" Start substitute on current word under the cursor
-" nnoremap <Space>s :%s///gc<Left><Left><Left>
-
-" Start search on current word under the cursor
-" nnoremap <Space>/ /<CR>
-
-" Start reverse search on current word under the cursor
-" nnoremap <Space>? ?<CR>
-
-" Faster sort
-" vnoremap <Space>s :!sort<CR>
-
-" windows and buffers
-
-" Buffers navigation and management
-nnoremap <silent> + :bn<CR>
-nnoremap <silent> _ :bp<CR>
-
-" ALT-HJKL to change 10x horizontal window resize
-map <silent> ¬ 10<C-w>>
-map <silent> ˙ 10<C-w><
-map <silent> ∆ 10<C-w>-
-map <silent> ˚ 10<C-w>+
-
-" Toggle fullscreen window
-nnoremap <silent> <C-w>z :MaximizerToggle<CR>
-inoremap <silent> <C-w>z :MaximizerToggle<CR>
-
 " Quiting and saving all
 cnoremap ww wqall
 cnoremap qq qall
-
 
 " jk is <esc> in insert mode
 inoremap jk <esc>
 
 " no need to press shift ; for every vim command
 nnoremap ; :
-
-" no vim backup
-set nobackup
-
-" turn off search highlight with <esc><esc> (double tab escape)
-nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
-
-
 
 " Make sure Vim returns to the same line when you reopen a file. Thanks, Amit and Steve Losh.
 augroup line_return
@@ -398,25 +359,162 @@ augroup line_return
         \ endif
 augroup END
 
+" ==========
+" }}}
 
 
+" Colors {{{
+" ==========
+
+" Syntax highlighting
+syntax on
+
+" OceanicNext colorscheme requires termguicolors
+if (has("termguicolors"))
+  set termguicolors
+end
+
+" Color scheme
+colorscheme OceanicNext
+" colorscheme base16-railscasts
+" colorscheme base16-ocean
+
+" ==========
+" }}}
 
 
-" Plugin settings
+" Spelling {{{
+" ==========
 
-" vimplug
-nnoremap <leader>pi :PlugInstall<CR>
-nnoremap <leader>pu :PlugUpdate<CR>
-nnoremap <leader>pU :PlugUpgrade<CR>
-nnoremap <leader>pc :PlugClean<CR>
+set spellfile=~/.config/nvim/spell/dictionary.utf-8.add
+set spelllang=en_us                         " Set language to US English
+set nospell                                 " Disable checking by default
+
+" Fix spelling error on the go
+inoremap <C-s> <C-g>u<ESC>[s1z=`]a<C-g>u
+
+" Fix spelling error in normal mode
+nnoremap <C-s> <C-g>u<ESC>[s1z=`]a<C-g>u
+
+" toggle spelling with F4 key
+map <F4> :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
+
+"Turn spellcheck on for markdown files
+autocmd BufNewFile,BufRead *.md setlocal spell
+autocmd BufNewFile,BufRead *.md setlocal tw=80
+
+" ==========
+" }}}
 
 
+" Clipboard {{{
+" ==========
+
+" Allow to use system clipboard
+set clipboard+=unnamed
+
+" Yank and paste from clipboard
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+nnoremap <leader>yy "+yy
+nnoremap <leader>p "+p
+
+" ==========
+" }}}
 
 
+" Folding {{{
+" ==========
+"  show all the folds
+set foldenable
+
+" when opening a new file, show no folds
+" set nofoldenable
+
+" starting fold level when opening a new file
+" 0 - all folds are closed
+" 99 - all folds are open
+" 10 - only very nested blocks are folded when opening new file
+set foldlevelstart=10
+
+" guards you against too many nested folds
+set foldnestmax=10
+
+" custom folds for this file
+set modelines=1
+
+" <space> opens/closes the fold around the current block
+nnoremap <space> za
+
+" fold method based on syntax
+set foldmethod=indent
+
+" Custom text when a block is folded - Title .... x lines [ y% ]
+set foldtext=CustomFoldText('.')
+" ==========
+" }}}
 
 
+" File Types {{{
+" ==========
 
-" = lightline
+set suffixesadd+=.js,.rb                    " Add js and ruby files to suffixes, to help 'gf'
+filetype plugin on                          " Filetype settings
+filetype indent on                          " Filetype settings
+
+" ==========
+" }}}
+
+
+" Tabs & Spaces {{{
+" ==========
+
+" === Whitespace characters ===
+set list                                    " Show listchars by default
+set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:·
+set nojoinspaces                            " No extra space when joining a line which ends with . ? !
+
+" Autoremove trailing spaces when saving the buffer
+autocmd FileType c,cpp,elixir,eruby,html,java,javascript,php,ruby autocmd BufWritePre <buffer> :%s/\s\+$//e
+
+" ==========
+" }}}
+
+
+" Misc Settings {{{
+" ==========
+
+" === Timeout ===
+" Time out on key codes but not mappings.
+" Basically this makes terminal Vim work sanely. (by Steve Losh)
+set notimeout
+set ttimeout
+set ttimeoutlen=10
+
+" === Neovim ===
+let g:loaded_python_provider=1              " Disable python 2 interface
+let g:python_host_skip_check=1              " Skip python 2 host check
+" Creates a special virtualenvironment for neovim so packages do not need to
+" be reinstalled in each new virtual environment
+let g:python3_host_prog=$HOME."/.pyenv/versions/neovim_python_venv/bin/python"
+
+" === Native Terminal ===
+" Native Neovim terminal switching
+" tnoremap <C-h> <C-\><C-n><C-w>h
+" tnoremap <C-j> <C-\><C-n><C-w>j
+" tnoremap <C-k> <C-\><C-n><C-w>k
+" tnoremap <C-l> <C-\><C-n><C-w>l
+" Terminal mode mappings
+tnoremap <ESC> <C-\><C-n>
+tnoremap ,<ESC> <ESC>
+
+" ==========
+" }}}
+
+
+" Lightline {{{
+" ==========
+
 let g:lightline = {
       \ 'colorscheme': 'jellybeans',
       \ 'tab': {
@@ -455,240 +553,9 @@ let s:palette.normal.middle = [ [ "#30302c", "#1f9966", 236, 222 ] ]
 " Inctive buffers get usual middle bar color
 let s:palette.inactive.middle = [ [ "#30302c", "#30302c", 236, 236 ] ]
 
-
-
-" Colors {{{
-" ==========
-" Syntax highlighting
-syntax on
-
-" OceanicNext colorscheme requires termguicolors
-if (has("termguicolors"))
-  set termguicolors
-end
-
-" Color scheme
-colorscheme OceanicNext
-" colorscheme base16-railscasts
-" colorscheme base16-ocean
-
 " ==========
 " }}}
 
-" Spelling {{{
-" ==========
-set spellfile=~/.config/nvim/spell/dictionary.utf-8.add
-set spelllang=en_us                         " Set language to US English
-set nospell                                 " Disable checking by default
-
-" Fix spelling error on the go
-inoremap <C-s> <C-g>u<ESC>[s1z=`]a<C-g>u
-
-" Fix spelling error in normal mode
-nnoremap <C-s> <C-g>u<ESC>[s1z=`]a<C-g>u
-
-" toggle spelling with F4 key
-map <F4> :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
-
-"Turn spellcheck on for markdown files
-autocmd BufNewFile,BufRead *.md setlocal spell
-autocmd BufNewFile,BufRead *.md setlocal tw=80
-
-" = SPELLING
-" ==========
-" }}}
-
-" Tabs & Spaces {{{
-" ==========
-" when vim opens a file and sees a <tab> it displays 4 spaces
-set tabstop=4
-
-" size of an indent
-set shiftwidth=4
-
-" when editing, number of spaces inserted for a <tab>
-" number of spaces deleted when pressing <delete>
-set softtabstop=4
-
-" pressing tab is the same as pressing x spaces
-" convert tabs to spaces
-set expandtab
-
-" turns on filetype detection
-" allows loading of language specific indentation files based on that detection
-filetype plugin indent on
-
-" allow backspace to delete anything in insert mode
-set backspace=indent,eol,start
-
-" indent a new line the same amount as the line just typed
-set autoindent
-
-" ==========
-" }}}
-
-" UI {{{
-" ==========
-" add line numbers
-set number
-
-" highlight the current line the cursor is on
-" set cursorline
-
-" do not redraw in the middle of macros
-set lazyredraw
-
-" show matching brackets
-set showmatch
-
-" place the cursor when clicking
-" activate visual mode on click
-" allow mouse scrolling
-set mouse=a
-
-" turn off error beeping and flashing
-set visualbell
-set errorbells
-
-" character to use as wall between vertical vim pane splits
-set fillchars+=vert:┃
-" ==========
-" }}}
-
-" Search {{{
-" ==========
-" search as characters are entered
-set incsearch
-
-" highlight matches
-set hlsearch
-
-" turn off search highlight with <esc><esc> (double tab escape)
-nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
-
-" ignore case if search pattern is all lowercase, otherwise case sensitive
-set smartcase
-
-" wildcard ignore for search
-set wildignore+=*.pyc,*.o,*.class,*.lo,.git
-" ==========
-" }}}
-
-" Folding {{{
-" ==========
-"  show all the folds
-set foldenable
-
-" when opening a new file, show no folds
-" set nofoldenable
-
-" starting fold level when opening a new file
-" 0 - all folds are closed
-" 99 - all folds are open
-" 10 - only very nested blocks are folded when opening new file
-set foldlevelstart=10
-
-" guards you against too many nested folds
-set foldnestmax=10
-
-" custom folds for this file
-set modelines=1
-
-" <space> opens/closes the fold around the current block
-nnoremap <space> za
-
-" fold method based on syntax
-set foldmethod=indent
-
-" Custom text when a block is folded - Title .... x lines [ y% ]
-set foldtext=CustomFoldText('.')
-" ==========
-" }}}
-
-" Shortcuts {{{
-" ==========
-" vertically travel over wrapped lines as if it was two lines
-nnoremap j gj
-nnoremap k gk
-
-" change the vim leader from \ to ,
-let mapleader=","
-
-" jk is <esc> in insert mode
-inoremap jk <esc>
-
-" save session
-nnoremap <leader>s :mksession<CR>
-
-" cu (clean-up) to reformat whole file
-nnoremap cu gg=G``
-
-" no need to press shift ; for every vim command
-nnoremap ; :
-
-" paste toggle with F2
-set pastetoggle=<F2>
-" ==========
-" }}}
-
-" Backup {{{
-" ==========
-" no vim backup
-set nobackup
-set noswapfile
-
-" remember more commands and search history
-set history=1000
-
-" remember more levels of undo
-set undolevels=1000
-
-" persistant undo history
-set undodir=~/.config/nvim/undodir
-
-" save undos when file is closed
-set undofile
-
-" number of lines to save for undo
-set undoreload=10000
-" ==========
-" }}}
-
-" Autogroups {{{
-" ==========
-" highlight trailing whitespace
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd BufRead,InsertLeave * match ExtraWhitespace /\s\+$/
-
-" autoremove trailing spaces when saving the buffer
-autocmd FileType c,cpp,elixir,eruby,html,java,javascript,php,ruby autocmd BufWritePre <buffer> :%s/\s\+$//e
-
-" highlight too-long lines
-autocmd BufRead,InsertEnter,InsertLeave * 2match LineLengthError /\%126v.*/
-highlight LineLengthError ctermbg=black guibg=black
-autocmd ColorScheme * highlight LineLengthError ctermbg=black guibg=black
-
-" set up highlight group & retain through colorscheme changes
-highlight ExtraWhitespace ctermbg=red guibg=red
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-
-" language-specific settings for certain filetypes/file extensions - dougblack
-augroup configgroup
-    autocmd!
-    autocmd VimEnter * highlight clear SignColumn
-    autocmd BufEnter *.cls setlocal filetype=java
-    autocmd BufEnter *.zsh-theme setlocal filetype=zsh
-    autocmd BufEnter Makefile setlocal noexpandtab
-    autocmd BufEnter *.sh setlocal tabstop=2
-    autocmd BufEnter *.sh setlocal shiftwidth=2
-    autocmd BufEnter *.sh setlocal softtabstop=2
-    autocmd BufEnter *.py setlocal tabstop=4
-    autocmd BufEnter *.md setlocal ft=markdown
-    autocmd BufEnter *.go setlocal noexpandtab
-    autocmd BufEnter *.avsc setlocal ft=json
-augroup END
-" ==========
-" }}}
 
 " Custom Functions {{{
 " ==========
@@ -733,33 +600,57 @@ endf
 " ==========
 " }}}
 
+
 " Plugin Options {{{
 " ==========
-" -- NERDTree --
-" which file types NERDtree should ignore
+
+" === NERDTree ===
+let g:NERDTreeMinimalUI=1
+let g:NERDTreeWinSize=30
+let g:NERDTreeAutoDeleteBuffer=1
+let g:NERDTreeShowHidden=1
+let g:NERDTreeHighlightCursorline=0
+let g:NERDTreeRespectWildIgnore=1
+
 let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.py\$class$', '\.obj$', '\.o$', '\.so$', '^\.git$', '__pycache__', '\.DS_Store', '\.class$' ]
-" toggling NERDTree
+
 map <silent> <leader>nt :NERDTreeToggle<CR>
-" NERDTree wrapper
 " nnoremap <silent> <Space>n :call utils#nerdWrapper()<CR>
-" Source (reload configuration)
-nnoremap <silent> <F5> :source $MYNVIMRC<CR>
+" nnoremap <silent> <F5> :source $MYNVIMRC<CR>
 
-
-" -- undotree --
-" toggle super undo with <F5>
+" === Undotree ===
 nnoremap <F5> :UndotreeToggle<CR>
 
-" -- fzf --
-" fuzzy find
+" === vim-jsx ===
+let g:jsx_ext_required=0
+
+" === vim-markdown ===
+let g:vim_markdown_no_default_key_mappings=1
+let g:vim_markdown_folding_disabled=1
+let g:markdown_fenced_languages=[
+      \'bash=sh',
+      \'git=gitconfig',
+      \'javascript',
+      \'lua',
+      \'ruby',
+      \'tmux',
+      \'viml=vim',
+      \'xdefaults',
+      \'zsh']
+
+" === fzf ===
 nnoremap <C-t> :Files<CR>
 
-" rails testing
+" === RSpec ===
 nmap <silent> <leader>rn :TestNearest<CR>
 nmap <silent> <leader>rf :TestFile<CR>
 nmap <silent> <leader>rl :TestLast<CR>
 
-
+" === Vimplug ===
+nnoremap <leader>pi :PlugInstall<CR>
+nnoremap <leader>pu :PlugUpdate<CR>
+nnoremap <leader>pU :PlugUpgrade<CR>
+nnoremap <leader>pc :PlugClean<CR>
 
 " ==========
 " }}}
