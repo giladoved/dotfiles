@@ -36,6 +36,10 @@ Plug 'psliwka/vim-smoothie'
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 " Vim Maximizer will make the current window 'fullscreen'
 Plug 'szw/vim-maximizer'
+" Git Branch on lightline
+Plug 'itchyny/vim-gitbranch'
+" Sessions
+Plug 'tpope/vim-obsession'
 
 
 " --------------------------------------------------
@@ -159,7 +163,7 @@ set nolazyredraw                            " Don't redraw while executing macro
 
 set showcmd                                 " Show commands as you type them
 set number                                  " Just absolute numbers
-set showmode                                " Always show mode
+set noshowmode                              " Don't show mode, lightline will show it instead
 set nowrap                                  " Do not wrap long line
 set cmdheight=1                             " Command line height
 set pumheight=10                            " Completion window max size
@@ -347,6 +351,10 @@ cnoremap qq qall
 " jk is <esc> in insert mode
 inoremap jk <esc>
 
+"Auto save settings without having to reload VIM
+" TODO fricks up the foldings
+" nnoremap <Leader>r :source ~/.config/nvim/init.vim<C-CR>
+
 " no need to press shift ; for every vim command
 nnoremap ; :
 
@@ -451,6 +459,7 @@ set foldmethod=indent
 
 " Custom text when a block is folded - Title .... x lines [ y% ]
 set foldtext=CustomFoldText('.')
+
 " ==========
 " }}}
 
@@ -476,6 +485,8 @@ set nojoinspaces                            " No extra space when joining a line
 
 " Autoremove trailing spaces when saving the buffer
 autocmd FileType c,cpp,elixir,eruby,html,java,javascript,php,ruby autocmd BufWritePre <buffer> :%s/\s\+$//e
+" Remove trailing whitespaces automatically before save
+" autocmd BufWritePre * call utils#stripTrailingWhitespaces()
 
 " ==========
 " }}}
@@ -494,9 +505,6 @@ set ttimeoutlen=10
 " === Neovim ===
 let g:loaded_python_provider=1              " Disable python 2 interface
 let g:python_host_skip_check=1              " Skip python 2 host check
-" Creates a special virtualenvironment for neovim so packages do not need to
-" be reinstalled in each new virtual environment
-let g:python3_host_prog=$HOME."/.pyenv/versions/neovim_python_venv/bin/python"
 
 " === Native Terminal ===
 " Native Neovim terminal switching
@@ -515,6 +523,19 @@ tnoremap ,<ESC> <ESC>
 " Lightline {{{
 " ==========
 
+function! StatusDiagnostic() abort
+  let info = get(b:, 'coc_diagnostic_info', {})
+  if empty(info) | return '' | endif
+  let msgs = []
+  if get(info, 'error', 0)
+    call add(msgs, '❌ ' . info['error'])
+  endif
+  if get(info, 'warning', 0)
+    call add(msgs, '⚠️  ' . info['warning'])
+  endif
+  return join(msgs, ' ')
+endfunction
+
 let g:lightline = {
       \ 'colorscheme': 'jellybeans',
       \ 'tab': {
@@ -522,17 +543,18 @@ let g:lightline = {
       \   'inactive': [ 'filename' ]
       \ },
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename' ], [ 'session' ],  ['cocstatus' ] ],
+      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'modified', 'filename'], ['gitbranch'], [ 'session' ],  ['cocstatus' ] ],
       \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding' ] ]
       \ },
       \ 'component': {
-      \   'readonly': '%{&filetype=="help"?"HELP":&readonly?"RO":""}'
+     \   'readonly': '%{&filetype=="help"?"HELP":&readonly?"RO":""}'
       \ },
       \ 'component_function': {
       \   'mode': 'utils#lightLineMode',
       \   'filename': 'utils#lightLineFilename',
       \   'fileencoding': 'utils#lightLineFileencoding',
-      \   'cocstatus': 'coc#status',
+      \   'gitbranch': 'gitbranch#name',
+      \   'cocstatus': 'StatusDiagnostic',
       \ },
       \ 'component_expand': {
       \   'session': 'utils#lightLineSession'
@@ -627,16 +649,86 @@ let g:jsx_ext_required=0
 " === vim-markdown ===
 let g:vim_markdown_no_default_key_mappings=1
 let g:vim_markdown_folding_disabled=1
-let g:markdown_fenced_languages=[
-      \'bash=sh',
-      \'git=gitconfig',
-      \'javascript',
-      \'lua',
-      \'ruby',
-      \'tmux',
-      \'viml=vim',
-      \'xdefaults',
-      \'zsh']
+let g:vim_markdown_frontmatter=1
+
+" === COC ===
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+" use shift tab to browse options backwards
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Use <space> to confirm completion
+inoremap <expr> <space> pumvisible() ? "\<C-y>" : "\<C-g>u\<space>"
+
+" don't give |ins-completion-menu messages
+set shortmess+=c
+
+" Close the preview window when completion is done.
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" Comment syntax in JSONC files (coc-settings)
+autocmd FileType json syntax match Comment +\/\/.\+$+
+
+" Use C to open coc config
+function! SetupCommandAbbrs(from, to)
+  exec 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfunction
+call SetupCommandAbbrs('C', 'CocConfig')
+
+let g:coc_global_extensions = [
+      \ 'coc-java',
+      \ 'coc-eslint',
+      \ 'coc-git',
+      \ 'coc-css',
+      \ 'coc-html',
+      \ 'coc-json',
+      \ 'coc-markdownlint',
+      \ 'coc-python',
+      \ 'coc-snippets',
+      \ 'coc-solargraph',
+      \ 'coc-tsserver',
+      \ 'coc-yaml',
+      \ ]
+
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call CocActionAsync("doHover")<CR>
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Use `:OR` for organize import of current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Format and import on save of go files using COC
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
 " === fzf ===
 nnoremap <C-t> :Files<CR>

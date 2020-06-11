@@ -1,0 +1,19 @@
+{
+    "suggest.autoTrigger": "none",           // only trigger when I tell it to
+    "coc.preferences.noselect": false,       // auto select first item
+
+    "eslint.filetypes": [                    // which filetypes to run eslint
+      "javascript",
+      "typescript",
+      "typescriptreact",
+      "javascriptreact"
+    ],
+//    "coc.preferences.currentFunctionSymbolAutoUpdate": true,   // To update its value automatically
+    "eslint.run": "onSave",                  // run the linter on saving
+ //   "eslint.autoFixOnSave": true,            // auto fix on save
+
+  // have lint warnings/errors appear on status bar
+  "signature.target": "echo",
+  "diagnostic.messageTarget": "echo",
+  "coc.preferences.hoverTarget": "echo",
+}
