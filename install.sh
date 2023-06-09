@@ -36,18 +36,11 @@ echo -e "... Backing up to ~/.backup"
 mkdir -p $BACKUP_DIR
 [ -f ~/.vimrc ] && cat ~/.vimrc > $BACKUP_DIR/vimrc && rm ~/.vimrc
 [ -f ~/.nvim/nvimrc ] && cat ~/.nvim/nvimrc > $BACKUP_DIR/nvimrc && rm ~/.nvim/nvimrc
+[ -f ~/.zshrc ] && cat ~/.zshrc > $BACKUP_DIR/zshrc && rm ~/.zshrc
 
 # setup neovim dir
 NEOVIM_DIR=~/.config/nvim
 mkdir -p $NEOVIM_DIR
-
-# install vim plug
-VIM_PLUG_DIR=~/.config/nvim/autoload
-if [ ! -f $VIM_PLUG_DIR/plug.vim ]; then
-    echo -e "... Vim Plug"
-    mkdir -p $VIM_PLUG_DIR
-    curl -fLo $VIM_PLUG_DIR/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
 
 # apply neovim configs
 echo -e "... Applying neovim configs"
@@ -89,10 +82,6 @@ if [ ! -d $COLORTHEME_DIR ]; then
   echo -e "... Color theme"
   git clone https://github.com/mhartington/oceanic-next-shell.git ~/.config/oceanic-next-shell
 fi
-
-# backup current zshrc
-echo -e "... Backing up to ~/.backup"
-[ -f ~/.zshrc ] && cat ~/.zshrc > $BACKUP_DIR/zshrc && rm ~/.zshrc
 
 echo -e "... Importing zsh configs"
 ln -sf $PWD/zsh/zshrc ~/.zshrc

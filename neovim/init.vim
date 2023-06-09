@@ -7,11 +7,10 @@
 " Plugins {{{
 " ==========
 
-" Auto install Plug
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
 call plug#begin('~/.config/nvim/plugged')
@@ -43,51 +42,9 @@ Plug 'tpope/vim-obsession'
 
 
 " --------------------------------------------------
-" 1.2 Javascript
-" --------------------------------------------------
-
-" Javascript
-Plug 'pangloss/vim-javascript'
-" JSX
-Plug 'mxw/vim-jsx', { 'for': ['jsx', 'javascript.jsx'] }
-" JSX React
-Plug 'peitalin/vim-jsx-typescript'
-" Typescript
-Plug 'leafgarland/typescript-vim'
-
-
-" --------------------------------------------------
-" 1.3 HTML/CSS
-" --------------------------------------------------
-
-" HTML5 syntax
-Plug 'othree/html5.vim'
-" HTML Tag Closing
-Plug 'alvan/vim-closetag'
-" SCSS syntax
-Plug 'cakebaker/scss-syntax.vim'
-" Color highlighter
-Plug 'lilydjwg/colorizer', { 'for': ['css', 'sass', 'scss', 'less', 'html', 'xdefaults', 'javascript', 'javascript.jsx', 'vim'] }
-
-
-" --------------------------------------------------
-" 1.4 Ruby
-" --------------------------------------------------
-
-" Rails highlighting
-Plug 'tpope/vim-rails', { 'for': ['ruby', 'eruby', 'haml', 'slim'] }
-" Rails do end autowriting
-Plug 'tpope/vim-endwise'
-" Rails testing
-Plug 'janko-m/vim-test'
-
-
-" --------------------------------------------------
 " 1.5 Other languages
 " --------------------------------------------------
 
-" Elixir syntax
-Plug 'elixir-lang/vim-elixir'
 " Yaml indentation
 Plug 'martin-svk/vim-yaml'
 " Markdown syntax
@@ -98,14 +55,8 @@ Plug 'tpope/vim-git'
 Plug 'keith/tmux.vim'
 " Dockerfile
 Plug 'honza/dockerfile.vim'
-" GraphQL
-Plug 'jparise/vim-graphql'
 "JSON syntax
 Plug 'sheerun/vim-json'
-" JSON5 syntax
-Plug 'GutenYe/json5.vim'
-" Elm
-Plug 'elmcast/elm-vim'
 " Tmux syntax
 Plug 'keith/tmux.vim'
 
@@ -374,18 +325,13 @@ augroup END
 " Colors {{{
 " ==========
 
-" Syntax highlighting
-syntax on
-
-" OceanicNext colorscheme requires termguicolors
+" Color scheme
+syntax enable
 if (has("termguicolors"))
   set termguicolors
 end
-
-" Color scheme
 colorscheme OceanicNext
-" colorscheme base16-railscasts
-" colorscheme base16-ocean
+let g:airline_theme='oceanicnext'
 
 " ==========
 " }}}
@@ -394,7 +340,6 @@ colorscheme OceanicNext
 " Spelling {{{
 " ==========
 
-set spellfile=~/.config/nvim/spell/dictionary.utf-8.add
 set spelllang=en_us                         " Set language to US English
 set nospell                                 " Disable checking by default
 
@@ -690,18 +635,9 @@ endfunction
 call SetupCommandAbbrs('C', 'CocConfig')
 
 let g:coc_global_extensions = [
-      \ 'coc-java',
-      \ 'coc-eslint',
-      \ 'coc-git',
-      \ 'coc-css',
-      \ 'coc-html',
+      \ 'coc-clangd',
       \ 'coc-json',
-      \ 'coc-markdownlint',
-      \ 'coc-python',
-      \ 'coc-snippets',
-      \ 'coc-solargraph',
       \ 'coc-tsserver',
-      \ 'coc-yaml',
       \ ]
 
 

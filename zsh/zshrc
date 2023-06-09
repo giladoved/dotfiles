@@ -3,12 +3,6 @@
 # ========= zsh config file =========
 # ===================================
 
-# ===================================
-# Other configs
-# ===================================
-# advark
-source ~/.advarkrc
-
 
 # ===================================
 # Color Theme
@@ -20,11 +14,49 @@ BASE16_SHELL="$HOME/.config/oceanic-next-shell/oceanic-next.dark.sh"
 # ===================================
 # Path
 # ===================================
+# android
+export ANDROID_HOME=/Users/giladoved/Library/Android/sdk
+export PATH="$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
 export ANDROID_SDK=~/Library/Android/sdk
 export ANDROID_NDK=~/Library/Android/sdk/ndk-bundle
 export PATH=${PATH}:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools:$ANDROID_NDK
 export PATH=${PATH}:/usr/local/bin
-export PATH=${PATH}:~/miniconda3/bin
+
+# get machine's ip address
+alias ip="ipconfig getifaddr en0"
+# python -> python3
+alias python=/usr/bin/python3
+# edit global zsh configuration
+alias zshconfig="vim ~/.zshrc"
+# reload zsh configuration
+alias zshsource="source ~/.zshrc"
+# navigate to global ssh directory
+alias sshhome="cd ~/.ssh"
+# edit global ssh configuration
+alias sshconfig="vim ~/.ssh/config"
+# edit global git configuration
+alias gitconfig="vim ~/.gitconfig"
+
+# git aliases
+alias ga='git add'
+alias gp='git push'
+alias gl='git log'
+alias gs='git status'
+alias gd='git diff'
+alias gm='git commit -m'
+alias gma='git commit -am'
+alias gb='git branch'
+
+alias createnext='npx create-next-app@latest'
+
+# type sublime . to open current folder in Sublime Text
+alias sublime="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl --new-window $@"
+# beancount
+export PYTHONPATH=/Users/giladoved/Accounting
+
+alias vim="nvim"
+alias vi="nvim"
+# \vim ignores alias
 
 
 # ===================================
@@ -48,10 +80,6 @@ fi
 # =========================================
 # Alias
 # =========================================
-if type nvim > /dev/null 2>&1; then
-  alias vim='nvim'
-  alias vi='nvim'
-fi
 alias clera='clear'
 alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 alias topdu='du -a | sort -nr | head -50'
@@ -59,12 +87,6 @@ alias rm='rm -i'
 alias dd='echo "no dd command available"'
 # alias chmod='chmod --preserve-root'
 # alias chown='chown --preserve-root'
-
-alias ai='cd ~/Documents/school/ai'
-alias aai='eval "$(conda shell.bash hook)" && conda activate ai_env'
-
-alias connecttojansen='ssh -Yp 2222 gilad@24.28.15.234'
-# scp -rP 2222 gilad@24.28.15.234:/home/advark/advark/data/raw/sports/baseball/
 
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 
@@ -85,23 +107,6 @@ RPROMPT='%D{%K:%M:%S} %W'
 
 
 # =========================================
-# Conda
-# =========================================
-# !! Contents within this block are managed by 'conda init' !!
-# __conda_setup="$('/Users/giladoved/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#     eval "$__conda_setup"
-# else
-#     if [ -f "/Users/giladoved/miniconda3/etc/profile.d/conda.sh" ]; then
-#         . "/Users/giladoved/miniconda3/etc/profile.d/conda.sh"
-#     else
-#         export PATH="/Users/giladoved/miniconda3/bin:$PATH"
-#     fi
-# fi
-# unset __conda_setup
-
-
-# =========================================
 # Tmux
 # =========================================
 # Detach tmux when closing iterm
@@ -116,25 +121,4 @@ RPROMPT='%D{%K:%M:%S} %W'
 # export FZF_DEFAULT_OPTS="--extended"
 # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/giladoved/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/giladoved/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/giladoved/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/giladoved/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
 
