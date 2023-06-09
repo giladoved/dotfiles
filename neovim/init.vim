@@ -481,44 +481,44 @@ function! StatusDiagnostic() abort
   return join(msgs, ' ')
 endfunction
 
-let g:lightline = {
-      \ 'colorscheme': 'jellybeans',
-      \ 'tab': {
-      \   'active': [ 'filename' ],
-      \   'inactive': [ 'filename' ]
-      \ },
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'modified', 'filename'], ['gitbranch'], [ 'session' ],  ['cocstatus' ] ],
-      \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding' ] ]
-      \ },
-      \ 'component': {
-     \   'readonly': '%{&filetype=="help"?"HELP":&readonly?"RO":""}'
-      \ },
-      \ 'component_function': {
-      \   'mode': 'utils#lightLineMode',
-      \   'filename': 'utils#lightLineFilename',
-      \   'fileencoding': 'utils#lightLineFileencoding',
-      \   'gitbranch': 'gitbranch#name',
-      \   'cocstatus': 'StatusDiagnostic',
-      \ },
-      \ 'component_expand': {
-      \   'session': 'utils#lightLineSession'
-      \ },
-      \ 'component_visible_condition': {
-      \   'readonly': '(&readonly)'
-      \ },
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' }
-      \ }
+" let g:lightline = {
+"       \ 'colorscheme': 'jellybeans',
+"       \ 'tab': {
+"       \   'active': [ 'filename' ],
+"       \   'inactive': [ 'filename' ]
+"       \ },
+"       \ 'active': {
+"       \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'modified', 'filename'], ['gitbranch'], [ 'session' ],  ['cocstatus' ] ],
+"       \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding' ] ]
+"       \ },
+"       \ 'component': {
+"      \   'readonly': '%{&filetype=="help"?"HELP":&readonly?"RO":""}'
+"       \ },
+"       \ 'component_function': {
+"       \   'mode': 'utils#lightLineMode',
+"       \   'filename': 'utils#lightLineFilename',
+"       \   'fileencoding': 'utils#lightLineFileencoding',
+"       \   'gitbranch': 'gitbranch#name',
+"       \   'cocstatus': 'StatusDiagnostic',
+"       \ },
+"       \ 'component_expand': {
+"       \   'session': 'utils#lightLineSession'
+"       \ },
+"       \ 'component_visible_condition': {
+"       \   'readonly': '(&readonly)'
+"       \ },
+"       \ 'separator': { 'left': '', 'right': '' },
+"       \ 'subseparator': { 'left': '', 'right': '' }
+"       \ }
 
 " Changes the lightline middle color for the active buffer
 " This helps a lot with finding out which split is active
 " Howver it's confusing as to which 256 color is magenta (the one set in alacritty.yaml)
-let s:palette = g:lightline#colorscheme#{g:lightline.colorscheme}#palette
+" let s:palette = g:lightline#colorscheme#{g:lightline.colorscheme}#palette
 " Active buffer gets yellow middle bar color
-let s:palette.normal.middle = [ [ "#30302c", "#1f9966", 236, 222 ] ]
+" let s:palette.normal.middle = [ [ "#30302c", "#1f9966", 236, 222 ] ]
 " Inctive buffers get usual middle bar color
-let s:palette.inactive.middle = [ [ "#30302c", "#30302c", 236, 236 ] ]
+" let s:palette.inactive.middle = [ [ "#30302c", "#30302c", 236, 236 ] ]
 
 " ==========
 " }}}

@@ -90,7 +90,8 @@ echo -e "~~~~~~~~~~~~~~~~~~~~\n"
 
 # last steps and thank you
 echo -e "Installation complete. The following actions are required before usage:"
-echo -e "1. Open vim"
-echo -e "2. Enter the command :PlugInstall"
-echo -e "3. Restart the terminal\n"
+echo -e "1. Restart the terminal"
+echo -e "2. Open vim"
+echo -e "3. Enter the command :PlugInstall"
+echo -e "4. Restart the terminal\n"
 echo -e "Thank you for installing Gilad's dotfiles!"
