@@ -57,7 +57,10 @@ export PYTHONPATH=/Users/giladoved/Accounting
 alias vim="nvim"
 alias vi="nvim"
 # \vim ignores alias
-
+export EDITOR=vim
+if type nvim > /dev/null 2>&1; then
+  export EDITOR=nvim
+fi
 
 # ===================================
 # Custom Functions
@@ -69,21 +72,12 @@ function title {
 
 
 # =========================================
-# Exports
-# =========================================
-export EDITOR=vim
-if type nvim > /dev/null 2>&1; then
-  export EDITOR=nvim
-fi
-
-
-# =========================================
 # Alias
 # =========================================
 alias clera='clear'
+alias cl='clear'
 alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 alias topdu='du -a | sort -nr | head -50'
-alias rm='rm -i'
 alias dd='echo "no dd command available"'
 # alias chmod='chmod --preserve-root'
 # alias chown='chown --preserve-root'
@@ -119,6 +113,7 @@ RPROMPT='%D{%K:%M:%S} %W'
 # =========================================
 # search for past command with fzf
 # export FZF_DEFAULT_OPTS="--extended"
-# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
